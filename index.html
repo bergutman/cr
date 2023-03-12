@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Colorado River Simulation</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/2.1.2/chartjs-plugin-annotation.min.js"
+        integrity="sha512-6dmCqRV2/iXtbm8z/9+7bzLhOkmXvq9R6WoR+8QgrojgMU0/Nin+/eaWouEGEU5ishyKDYgRoiq7kURCVmwmqw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        #page-title {
+            text-align: center;
+        }
+
+        #results {
+            padding: 2vh 15%;
+            background-image: url("1.webp");
+        }
+
+        #chart {
+            background-color: rgba(255,255,255,0.75);
+        }
+
+        .col-A {
+            width: 50%;
+        }
+
+        .col-B {
+            width: 50%;
+        }
+
+        #controls {
+            display: flex;
+            width: 100%;
+            padding: 2vh 15%;
+            box-sizing: border-box;
+        }
+
+        /* Style the progress bar */
+        progress {
+            width: 100%;
+            height: 20px;
+            border-radius: 10px;
+            background-color: #eee;
+            margin-bottom: 20px;
+        }
+
+        .progress-yellow::-webkit-progress-bar {
+            background: yellow;
+        }
+
+        .progress-red::-webkit-progress-bar {
+            background: red;
+            border-radius: 10px;
+        }
+
+        .progress-red::-moz-progress-bar {
+            background: red;
+            border-radius: 10px;
+        }
+
+        .progress-blue::-webkit-progress-bar {
+            background: blue;
+            border-radius: 10px;
+        }
+
+        .progress-blue::-moz-progress-bar {
+            background: blue;
+            border-radius: 10px;
+        }
+
+        .progress-green::-webkit-progress-bar {
+            background: green;
+        }
+        #meta {
+            padding: 2vh 15%;
+        }
+        img {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="page-title">Colorado River Simulation</h1>
+    <div id="results">
+        <canvas id="chart"></canvas>
+    </div>
+    <div id="controls">
+        <div class="col-A">
+            <h1>Controls</h1>
+            <div>
+                <label for="year-slider">Year:</label>
+                <input type="range" min="23" max="50" step="1" value="2" id="year-slider">
+            </div>
+            <div>
+                <label for="colorado-slider">Colorado:</label>
+                <input type="range" min="0" max="5" step="0.01" value="3.86" id="colorado-slider">
+            </div>
+            <div>
+                <label for="wyoming-slider">Wyoming:</label>
+                <input type="range" min="0" max="5" step="0.01" value="1.04" id="wyoming-slider">
+            </div>
+            <div>
+                <label for="utah-slider">Utah:</label>
+                <input type="range" min="0" max="5" step="0.01" value="1.71" id="utah-slider">
+            </div>
+            <div>
+                <label for="new-mexico-slider">New Mexico:</label>
+                <input type="range" min="0" max="5" step="0.01" value="0.84" id="new-mexico-slider">
+            </div>
+            <div>
+                <label for="nevada-slider">Nevada:</label>
+                <input type="range" min="0" max="5" step="0.01" value="0.3" id="nevada-slider">
+            </div>
+            <div>
+                <label for="arizona-slider">Arizona:</label>
+                <input type="range" min="0" max="10" step="0.01" value="2.85" id="arizona-slider">
+            </div>
+            <div>
+                <label for="california-slider">California:</label>
+                <input type="range" min="0" max="10" step="0.01" value="4.4" id="california-slider">
+            </div>
+        </div>
+        <div class="col-B">
+            <h1>Results (Year: 20<span id="year-span">23</span>)</h1>
+            <label>Total Water Supply (<span id="water-security-stats"></span> Million Acre-Feet)</label>
+            <progress id="water-security" class="progress-blue" value="13" max="13"></progress>
+            <label>Total Water Use (<span id="water-use-stats"></span> Million Acre-Feet)</label>
+            <progress id="water-use" class="progress-blue" value="13" max="13"></progress>
+            <label>Food Security</label>
+            <progress id="food-security" class="progress-blue" value="1" max="1"></progress>
+            <label>Economic Growth</label>
+            <progress id="economic-security" value="15" class="progress-blue" max="15"></progress>
+            <label>Residential Capacity</label>
+            <progress id="residential-security" value="15" class="progress-blue" max="15"></progress>
+        </div>
+    </div>
+    <div id="meta">
+        <h1>The Colorado River Crisis</h1>
+        <img src="3.png"/>
+        <p>(<a href="https://www.cnn.com/2023/01/31/us/california-water-proposal-colorado-river-climate/index.html" target="_blank">https://www.cnn.com/2023/01/31/us/california-water-proposal-colorado-river-climate/index.html</a>)</p>
+        <p>The Colorado River is a critical water source for millions of people and serves as the backbone of the United State's agricultural
+            infrastructure. However, the over-allocation of water from this river, combined with
+            the impacts of climate change, has resulted in a doomsday scenario where reservoirs are running out, threatening
+            the future of the region and the entire country (Nilsen, 2023).
+            <br><br>
+            The Colorado River Compact, a legal agreement signed in 1922, first allocated water rights to the seven states in the
+            South West region (Partlow, 2022). This allocation, however, was based on an overestimation of the river's annual flow. The estimate accounted
+            for a total discharge of 15 million acre-feet. Modern figures suggest that the total discharge (before climate change) is actually closer to 13 million
+            acre-feet (Swanson, 2023). Additionally, the region has been plauged by a so-called "prolonged drought" (likely a result of climate
+            change) and declining water levels due to increased evaporation along the river. These factors are already having significant impacts on
+            the region's agricultural capacity, with many farmers being forced to leave fields empty (James, 2023).
+            <br><br>
+            The Colorado River is so essential because it serves seven states and provides water to over 40 million people (LVVWD, 2023). It also provides water to a
+            $5 billion agricultural industry that produces over 90% of the country’s winter vegetables and a significant
+            portion of its fruits and nuts (James,2023). Reservoirs along the Colorado River have not
+            been full for over two decades, and the situation is expected to worsen in the coming years due to climate
+            change. This, in turn, has affected and will continue to affect food prices and availability across the entire
+            country (Swanson, 2023).
+            <br><br>
+            The legal response to this crisis has been, so far, a complete failure. States have yet to agree on any changes to the compact (Koch, 2022). To avoid disaster, states must balance the needs of residents and industry. Since agriculture uses the
+            majority of water from the river, residents cannot be expected to take on the bulk of conservation efforts.
+            Equally, residents must recognize the importance of the agricultural industry to the entire nation and not force
+            the issue entirely onto them. Furthermore, lower-basin states, including California and Arizona, will be the
+            first to receive federal water cutbacks under the current agreement (Nilsen, 2023), despite the fact that they produce a significant portion of the country's food (Koch, 2022).
+            Should these two states be forced to take on the majority of water conservation efforts, the nation as a whole will likely
+            experience significant food shortages and sharp price increases.
+            <br><br>
+            Potential solutions include improving water usage efficiency through conservation efforts such as drip
+            irrigation, investing in technologies such as desalination, and exploring alternative farming methods like
+            hydroponics (Boylan, 2020) (ScienceDirect, 2023). However, the truth of the matter is that the issue cannot be solved without deep conservation efforts. In order to
+            achieve these conservation goals, existing legislation must be overhauled in order to more fairly and equitably
+            distribute water allocations and conservation efforts across the seven affected states. As you can see from the simulation above, balancing the river's water allocation is extremely difficult. Introducing conservation measures leads to negative economic, residential, and agricultural impacts.  
+            <br><br>
+            The Colorado River water crisis is a serious issue that threatens the future of the entire South West region and
+            requires immediate attention from all involved stakeholders. The impacts of climate change, outdated water allocation
+            policies, and rapid population growth / urban development are placing significant strain on the river's limited resources. If the
+            crisis is not addressed comprehensively and collaboratively, the situation will only worsen, negatively
+            impacting the region's economy and food supply and leading to long-term sustainability concerns for the entire nation.
+        </p>
+        <h1>Simulation Details</h1>
+        <p>
+            This simulation is based upon real world data pertaining to the Colorado River crisis. The total water supply initiates at 13 million acre-feet, which is what current calculations estimate the river's actual discharge to be (Kuhn, 2023). By the year 2050, the river's total discharge is estimated to shrink by as much as 35% due to climate change (Wines, 2014). For the purpose of this simulation we are assuming a worst-case scenerio where the total water supply shrinks by 35% linearly. In the real world, however, it is unlikely that this shrinking will occur linearly. The effects of climate change will result in large fluctuations in the annual water supply averaging to a 35% reduction by 2050. However, predicting these exact fluctuations is out of the scope of this simulation. Water usage statistics for each state have been taken from the following allocation chart:
+        </p>
+        <img src="2.png"/>
+        <p>(<a href="https://en.wikipedia.org/wiki/Colorado_River_Compact" target="_blank">https://en.wikipedia.org/wiki/Colorado_River_Compact)</a></p>
+        <p>The simulation will also demonstrate how changes impact food security, economic growth, and residential capacity. Adjusting the water usage of California and Arizona (which together account for a significant sum of the nation's agricultural infrastructure) will affect food security. This is calculated using the following formula: <br><br> (Simulated Arizona Water Usage + Simulated California Water Usage) / 7.25 <br><br>The current total water usage of both states is 7.25 million Acre-feet per year, so the number 7.25 is used to represent 100% agricultural capcity.<br><br>The formulas for economic growth and residential capacity are somewhat over-simplified, but provide a very accurate overview of the situation. Essentially, as the total water supply and usage decreases economic growth and residential capacity shrink linearly. Simply put: less water = less money/people.</p>
+        <h1>Citations</h1>
+        <p>
+            Boylan, C. (2020, November 9). The future of farming: Hydroponics - PSCI. Princeton University. Retrieved February 2, 2023, from <a href="https://psci.princeton.edu/tips/2020/11/9/the-future-of-farming-hydroponics" target="_blank">https://psci.princeton.edu/tips/2020/11/9/the-future-of-farming-hydroponics</a>
+            <br><br>
+            Desalination. Desalination - an overview | ScienceDirect Topics. (2023). Retrieved February 2, 2023, from <a href="https://www.sciencedirect.com/topics/earth-and-planetary-sciences/desalination" target="_blank">https://www.sciencedirect.com/topics/earth-and-planetary-sciences/desalination</a>
+            <br><br>
+            James, I. (2023, February 1). Battling to avoid massive water cuts, California offers proposal on Colorado River Crisis. Los Angeles Times. Retrieved February 1, 2023, from <a href="https://www.latimes.com/environment/story/2023-02-01/california-offers-proposal-on-colorado-river-crisis" target="_blank">https://www.latimes.com/environment/story/2023-02-01/california-offers-proposal-on-colorado-river-crisis</a>
+            <br><br>
+            Koch, N. (2022, December 26). Arizona is in a race to the bottom of its water wells, with Saudi Arabia's help. The New York Times. Retrieved February 2, 2023, from <a href="https://www.nytimes.com/2022/12/26/opinion/arizona-water-colorado-river-saudi-arabia.html" target="_blank">https://www.nytimes.com/2022/12/26/opinion/arizona-water-colorado-river-saudi-arabia.html</a>
+            <br><br>
+            Kuhn, E. (2023, March 3). California and Its Neighbors Are at an Impasse over the Colorado River. Here’s a Way Forward. Retrieved March 12, 2023, from <a href="https://www.governing.com/now/california-neighbors-impasse-colorado-river-way-forward" target="_blank">https://www.governing.com/now/california-neighbors-impasse-colorado-river-way-forward</a>
+            <br><br>
+            LVVWD. (n.d.). Drought and conservation measures. Retrieved February 1, 2023, from <a href="https://www.lvvwd.com/conservation/measures/index.html" target="_blank">https://www.lvvwd.com/conservation/measures/index.html</a>
+            <br><br>
+            Nilsen, E. (2023, February 1). California floated cutting major southwest cities off Colorado River water before touching its agriculture supply, sources say. CNN. Retrieved February 1, 2023, from <a href="https://www.cnn.com/2023/01/31/us/california-water-proposal-colorado-river-climate/index.html?utm_term=link&amp;utm_content=2023-01-31T23%3A28%3A02&amp;utm_source=twCNN&amp;utm_medium=social" target="_blank">https://www.cnn.com/2023/01/31/us/california-water-proposal-colorado-river-climate/index.html?utm_term=link&amp;utm_content=2023-01-31T23%3A28%3A02&amp;utm_source=twCNN&amp;utm_medium=social</a>
+            <br><br>
+            Partlow, J., & Brulliard, K. (2022, August 17). U.S. announces more water cuts as Colorado River Hits Dire Lows. The Washington Post. Retrieved February 1, 2023, from <a href="https://www.washingtonpost.com/climate-environment/2022/08/16/colorado-river-bureau-of-reclamation/" target="_blank">https://www.washingtonpost.com/climate-environment/2022/08/16/colorado-river-bureau-of-reclamation/</a>
+            <br><br>
+            Swanson, C. (2023, January 25). Can the west save the Colorado River before it's too late? here are 8 possible solutions. The Denver Post. Retrieved February 2, 2023, from <a href="https://www.denverpost.com/2023/01/04/colorado-river-water-cuts-crisis-solutions/" target="_blank">https://www.denverpost.com/2023/01/04/colorado-river-water-cuts-crisis-solutions/</a>
+            <br><br>
+            Wines, M. (2014, January 5). Colorado River Drought Forces a Painful Reckoning for States. The New York Times. Retrieved March 12, 2023, from <a href="https://www.nytimes.com/2014/01/06/us/colorado-river-drought-forces-a-painful-reckoning-for-states.html" target="_blank">https://www.nytimes.com/2014/01/06/us/colorado-river-drought-forces-a-painful-reckoning-for-states.html</a>
+        </p>
+        <h1>Credits:</h1>
+        <p>Website made by Ber Gutman (2023) for AG421. <br>Code: <a href="https://github.com/bergutman/cr">https://github.com/bergutman/cr</a> + <a href="https://www.chartjs.org/" target="_blank">Open Source code from Chart.js</a></p>
+    </div>
+    <script>
+
+        const chartData = {
+            labels: ["Total Water Usage", "Colorado", "Wyoming", "Utah", "New Mexico", "Nevada", "Arizona", "California"],
+            datasets: [
+                {
+                    label: "Water Usage (million acre-feet)",
+                    data: [15, 3.86, 1.04, 1.71, 0.84, 0.3, 2.85, 4.4],
+                    backgroundColor: ["blue", "red", "orange", "yellow", "green", "cyan", "purple", "gray"]
+                }
+            ]
+        };
+
+        const updateYearData = () => {
+            const yearSlider = document.getElementById("year-slider");
+            const yearSpan = document.getElementById("year-span");
+            yearSpan.innerHTML = yearSlider.value;
+            calculateWaterLevel(yearSlider.value);
+            chart.update();
+            // function for shrinking water supply
+        };
+
+        const updateChartData = () => {
+            const coloradoSlider = document.getElementById("colorado-slider");
+            const wyomingSlider = document.getElementById("wyoming-slider");
+            const utahSlider = document.getElementById("utah-slider");
+            const newMexicoSlider = document.getElementById("new-mexico-slider");
+            const nevadaSlider = document.getElementById("nevada-slider");
+            const arizonaSlider = document.getElementById("arizona-slider");
+            const californiaSlider = document.getElementById("california-slider");
+
+            chartData.datasets[0].data[1] = parseFloat(coloradoSlider.value);
+            chartData.datasets[0].data[2] = parseFloat(wyomingSlider.value);
+            chartData.datasets[0].data[3] = parseFloat(utahSlider.value);
+            chartData.datasets[0].data[4] = parseFloat(newMexicoSlider.value);
+            chartData.datasets[0].data[5] = parseFloat(nevadaSlider.value);
+            chartData.datasets[0].data[6] = parseFloat(arizonaSlider.value);
+            chartData.datasets[0].data[7] = parseFloat(californiaSlider.value);
+            calculateTotal();
+            chart.update();
+            calculateFood(californiaSlider, arizonaSlider);
+        };
+
+        const yearSlider = document.getElementById("year-slider");
+        const coloradoSlider = document.getElementById("colorado-slider");
+        const wyomingSlider = document.getElementById("wyoming-slider");
+        const utahSlider = document.getElementById("utah-slider");
+        const newMexicoSlider = document.getElementById("new-mexico-slider");
+        const nevadaSlider = document.getElementById("nevada-slider");
+        const arizonaSlider = document.getElementById("arizona-slider");
+        const californiaSlider = document.getElementById("california-slider");
+
+        yearSlider.addEventListener("input", updateYearData);
+        coloradoSlider.addEventListener("input", updateChartData);
+        wyomingSlider.addEventListener("input", updateChartData);
+        utahSlider.addEventListener("input", updateChartData);
+        newMexicoSlider.addEventListener("input", updateChartData);
+        nevadaSlider.addEventListener("input", updateChartData);
+        arizonaSlider.addEventListener("input", updateChartData);
+        californiaSlider.addEventListener("input", updateChartData);
+
+        const chart = new Chart(document.getElementById("chart"), {
+            type: "bar",
+            data: chartData,
+            options: {
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 30,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                plugins: {
+                    annotation: {
+                        annotations: [
+                            {
+                                type: 'line',
+                                mode: 'horizontal',
+                                scaleID: 'y',
+                                value: 13,
+                                borderColor: 'red',
+                                borderWidth: 2,
+                                label: {
+                                    enabled: true,
+                                    content: '13 Million Acre-Feet'
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        });
+
+        const calculateTotal = () => {
+            const data = chartData.datasets[0].data.slice(1); // Exclude first element (total bar)
+            const total = data.reduce((acc, cur) => acc + cur);
+            const water_bar = document.getElementById("water-security");
+            const economic_bar = document.getElementById("economic-security");
+            const residential_bar = document.getElementById("residential-security");
+            const water_use_bar = document.getElementById("water-use");
+            const water_use_stats = document.getElementById("water-use-stats");
+            chartData.datasets[0].data[0] = total; // Update total bar
+            water_use_stats.innerHTML = total;
+            water_use_bar.value = total;
+            economic_bar.value = total;
+            residential_bar.value = total;
+            if (total >= water_bar.value) {
+                water_use_bar.classList.remove("progress-blue");
+                water_use_bar.classList.add("progress-red");
+                residential_bar.classList.remove("progress-red");
+                residential_bar.classList.add("progress-blue");
+                economic_bar.classList.remove("progress-red");
+                economic_bar.classList.add("progress-blue");
+            } else {
+                water_use_bar.classList.remove("progress-red");
+                water_use_bar.classList.add("progress-blue");
+                residential_bar.classList.remove("progress-blue");
+                residential_bar.classList.add("progress-red");
+                economic_bar.classList.remove("progress-blue");
+                economic_bar.classList.add("progress-red");
+            }
+
+        };
+
+        function calculateWaterLevel(currentYear) {
+            let waterLevel = 13; // Default 13 million acre-feet
+            const water_bar = document.getElementById("water-security");
+            const water_stats = document.getElementById("water-security-stats");
+            const water_use_bar = document.getElementById("water-use");
+            const water_use_stats = document.getElementById("water-use-stats");
+            if (currentYear >= 50) {
+                waterLevel = 13 * 0.65;
+                chart.options.plugins.annotation.annotations[0].value = waterLevel;
+                water_bar.value = waterLevel;
+                water_stats.innerHTML = waterLevel;
+                water_use_bar.max = waterLevel;
+            } else {
+                const yearsRemaining = 50 - currentYear;
+                const years_passed = currentYear - 23;
+                const annual_rate = (0.35 / 27); // 2050 is 27 years away from 2023
+                const shrink_rate = (years_passed * annual_rate);
+                waterLevel = 13 * (1 - shrink_rate);
+                chart.options.plugins.annotation.annotations[0].value = waterLevel;
+                water_bar.value = waterLevel;
+                water_stats.innerHTML = waterLevel;
+                water_use_bar.max = waterLevel;
+            }
+        }
+
+        const calculateFood = (CA, AZ) => {
+            const az_max_capacity = 2.85;
+            const ca_max_capacity = 4.4;
+            const food_bar = document.getElementById("food-security");
+            // let max_capacity = 8;
+            // let sum = CA.value + AZ.value;
+            console.log(CA.value)
+            console.log(AZ.value)
+            console.log(+CA.value + +AZ.value)
+            let food_security = (+CA.value + +AZ.value) / (+az_max_capacity + +ca_max_capacity);
+            console.log(food_security)
+            food_bar.value = food_security;
+            if (food_security >= 1) {
+                food_bar.classList.remove("progress-red");
+                food_bar.classList.add("progress-blue");
+            } else {
+                food_bar.classList.remove("progress-blue");
+                food_bar.classList.add("progress-red");
+            }
+
+        };
+        calculateWaterLevel(23);
+        calculateTotal();
+        chart.update();
+
+
+    </script>
+</body>
+
+</html>

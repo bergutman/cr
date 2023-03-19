@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "SSH FS - dbv",
+			"uri": "ssh://dbv/"
+		}
+	],
+	"settings": {}
+}
